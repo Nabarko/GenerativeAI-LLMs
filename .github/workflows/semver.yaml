@@ -1,0 +1,33 @@
+name: Version & Release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    release:
+      if: (! contains(github.event.head_commit.message, 'Initial commit'))
+      runs-on: "ubuntu-latest"
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - name: increment version
+          id: increment_version
+          uses: az-ai/az-action-semver@0.3.0
+          with:
+            apply_tag: "true"
+
+        - name: Create Release
+          env:
+            TAG: ${{ steps.increment_version.outputs.version }}
+          uses: actions/github-script@v6
+          with:
+            script: |
+              const {TAG} = process.env;
+              await github.rest.repos.createRelease({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    generate_release_notes: true,
+                    tag_name: TAG
+                  });

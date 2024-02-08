@@ -1,0 +1,67 @@
+name: PR Checks
+
+on: pull_request
+
+jobs:
+  set-version:
+    runs-on: ubuntu-latest
+    outputs:
+      python-version: ${{steps.python-version.outputs.version}}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.5.0
+      - name: set python version
+        id: python-version
+        uses:  ./.github/set-version
+        with:
+          version: 3.8
+
+  lint:
+    needs: set-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.5.0
+
+      - name: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{needs.set-version.outputs.python-version}}
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Install packages
+        shell: bash
+        run: |
+          poetry install --only dev
+
+      - name: run pre-commit checks on all files
+        shell: bash
+        run: |
+          poetry run pre-commit run --all-files
+
+  test:
+    needs: [lint,set-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{needs.set-version.outputs.python-version}}
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: checkout
+        uses: actions/checkout@v3.5.0
+
+      - name: Install poetry dev deps
+        shell: bash
+        run: |
+          poetry install --with dev
+
+      - name: Pytest
+        shell: bash
+        run: |
+          poetry run pytest
