@@ -1,10 +1,10 @@
 ---
-site_name: {{cookiecutter.repository}}  # yamllint disable-line
+site_name: GenerativeAI-LLMs  # yamllint disable-line
 site_description: ...
 repo_url: >
-  https://github.com/{{cookiecutter.org}}/{{cookiecutter.repository}}
+  https://github.com/AZ-AI/GenerativeAI-LLMs
 repo_name: >
-  '{{cookiecutter.org}}/{{cookiecutter.repository}}'  # yamllint disable-line
+  'AZ-AI/GenerativeAI-LLMs'  # yamllint disable-line
 
 nav:
   - Overview: README.md

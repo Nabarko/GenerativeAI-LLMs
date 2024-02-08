@@ -1,7 +1,6 @@
-![](https://img.shields.io/badge/template-not%20ready-red)
 ![Python version](https://img.shields.io/badge/python-3.8-blue.svg)
 
-# {{cookiecutter.repository}}
+# GenerativeAI-LLMs
 
 --------
 ## Important
@@ -57,7 +56,7 @@ There are some actions that run on this project by default:
     confidential information.
     │  
     ├── Dockerfile         <- A generic Dockerfile to help you get started.
-    ├── {{cookiecutter.package_name}}                <- Source code for use in this project.
+    ├── generativeai_llms                <- Source code for use in this project.
     │
 
 --------
